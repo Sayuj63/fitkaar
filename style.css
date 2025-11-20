@@ -1,0 +1,456 @@
+/* General Reset & Typography */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: #fdfdfd;
+    color: #333;
+    overflow-x: hidden;
+    line-height: 1.6;
+    background-image: radial-gradient(circle at 10% 20%, rgba(230, 230, 250, 0.3) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 240, 245, 0.3) 0%, transparent 20%);
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 4rem 1rem 2rem;
+}
+
+.brand-title {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.brand-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Intro Section */
+#intro {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 5% 6rem;
+    position: relative;
+    /* For decorative elements */
+}
+
+#intro::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 228, 225, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: float 6s ease-in-out infinite;
+}
+
+#intro::after {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    right: -5%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(230, 230, 250, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.intro-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    justify-content: space-between;
+}
+
+.founder-image-container {
+    flex: 1;
+    max-width: 45%;
+    margin: 0;
+    /* Reset margin */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.intro-text-container {
+    flex: 1;
+    text-align: left;
+}
+
+.intro-text {
+    font-size: 1.5rem;
+    /* Slightly larger */
+    margin-bottom: 2rem;
+    color: #444;
+    font-weight: 600;
+}
+
+.final-text {
+    margin-top: 3rem;
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+    position: relative;
+    z-index: 10;
+}
+
+
+
+/* Removed old founder-image-container styles as they are redefined above */
+
+.founder-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.founder-desc {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Scroll Story Section */
+#scroll-story {
+    position: relative;
+    background-image: radial-gradient(#e0e0e0 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+    /* Subtle dot pattern */
+}
+
+.sticky-container {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    pointer-events: none;
+    /* Let clicks pass through */
+}
+
+.center-image {
+    height: 70vh;
+    /* Start slightly larger */
+    width: auto;
+    max-width: 90vw;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s linear;
+    /* Smooth but responsive for scroll */
+    transform-origin: center center;
+    will-change: transform;
+}
+
+.story-content {
+    position: relative;
+    z-index: 2;
+    margin-top: -50vh;
+}
+
+.story-block {
+    min-height: 80vh;
+    /* Each block takes up space to scroll */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Space between text and images */
+    padding: 2rem 5%;
+    opacity: 0;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    margin-bottom: 5vh;
+}
+
+/* Alternating Layouts */
+.story-block:nth-child(odd) {
+    flex-direction: row;
+    /* Text Left, Images Right */
+}
+
+.story-block:nth-child(even) {
+    flex-direction: row-reverse;
+    /* Text Right, Images Left */
+}
+
+.story-block.left {
+    transform: translateX(-50px);
+}
+
+.story-block.right {
+    transform: translateX(50px);
+}
+
+/* Active State for Animation */
+.story-block.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.block-text {
+    flex: 1;
+    max-width: 35%;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent dark overlay */
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); */
+    z-index: 5;
+    color: #fff;
+}
+
+.block-text h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.block-text p {
+    font-size: 1.25rem;
+    color: #fff;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.block-images {
+    flex: 1;
+    max-width: 60%;
+    /* Increased width for dominance */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    position: relative;
+}
+
+.image-grid img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+/* Increase size for non-contained images (Blocks 1, 4, 6, 7, 8) */
+.image-grid:not(.contain-images) img {
+    width: 200px;
+    height: 200px;
+}
+
+.image-grid:not(.contain-images) img:nth-child(3n+1) {
+    width: 220px;
+    height: 220px;
+}
+
+.image-grid.contain-images img {
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Make some images larger for dynamic feel */
+.image-grid img:nth-child(3n+1) {
+    width: 160px;
+    height: 160px;
+}
+
+/* Cluttered Look - Random offsets using nth-child */
+.image-grid img:nth-child(odd) {
+    transform: rotate(-3deg) translateY(10px);
+}
+
+.image-grid img:nth-child(even) {
+    transform: rotate(2deg) translateY(-10px);
+}
+
+.image-grid img:nth-child(3n) {
+    transform: rotate(4deg) scale(1.1);
+    z-index: 2;
+}
+
+.image-grid img:hover {
+    transform: scale(1.1) rotate(0deg);
+    z-index: 10;
+}
+
+/* Block 5 Specifics */
+.story-block.block-5 {
+    flex-direction: column !important;
+    /* Stack vertically */
+    align-items: stretch;
+}
+
+.story-block.block-5 .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+
+
+
+
+.story-block.block-5 .bottom-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Final Transition Section */
+#final-transition {
+    height: 90vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5%;
+    overflow: hidden;
+}
+
+.final-images-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    /* For center image positioning context if needed */
+}
+
+.dummy-image {
+    width: 25vw;
+    height: 40vh;
+    background-color: #eee;
+    border-radius: 12px;
+    transition: margin 1.8s ease-out;
+    /* Slow spread */
+}
+
+/* Initial state: No margins (centered behind/near center image) */
+.dummy-image.left {
+    margin-right: 0;
+}
+
+.dummy-image.right {
+    margin-left: 0;
+}
+
+/* Spread state: Add margins */
+.dummy-image.left.spread {
+    margin-right: 26vw;
+}
+
+.dummy-image.right.spread {
+    margin-left: 26vw;
+}
+
+/* Youtube Section */
+#youtube-section {
+    padding: 6rem 5%;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+#youtube-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #222;
+    font-weight: 600;
+}
+
+.yt-container {
+    max-width: 500px;
+    /* Small and centered */
+    margin: 0 auto;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.yt-container:hover {
+    transform: scale(1.02);
+}
+
+.yt-container img {
+    width: 100%;
+    display: block;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.play-button::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 20px solid #333;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    margin-left: 5px;
+}
+
+.yt-container:hover .play-button {
+    background-color: #fff;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
