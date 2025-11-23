@@ -1,0 +1,1140 @@
+:root {
+    --bg-gradient-start: #2563EB;
+    --bg-gradient-end: #1E40AF;
+    --accent: #FFD700;
+    /* Gold/Yellow for fun contrast */
+    --text-main: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Permanent Marker', cursive;
+    /* Fun font by default */
+    background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Floating Background Particles */
+.bg-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 0;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* --- Scattered Layout Styles --- */
+
+/* --- Scattered Layout Styles --- */
+
+.fun-title {
+    font-size: 2rem;
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    text-shadow: 2px 2px 0px #000;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
+}
+
+.instruction-text {
+    display: none;
+    /* Hide instruction text to clean up */
+}
+
+.main-area {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tshirt-center-stage {
+    position: relative;
+    /* Changed from absolute to relative for flex centering */
+    width: 500px;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    margin: 0 auto;
+}
+
+.tshirt-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.4));
+}
+
+.tshirt-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Fix cropping */
+}
+
+/* Design Area & Elements */
+.design-area {
+    position: absolute;
+    top: 20%;
+    /* Adjusted for contain fit */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35%;
+    /* Narrower to fit chest area */
+    height: 45%;
+    overflow: visible;
+    /* Allow elements to stick out slightly if needed, or hidden */
+    z-index: 15;
+    /* border: 1px dashed rgba(255,255,255,0.3); Debugging */
+}
+
+.placeholder-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Scatter Zones & Glows */
+.scatter-zone {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Zone Background Glows */
+.scatter-zone::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    border-radius: 50%;
+    z-index: -1;
+    filter: blur(30px);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.zone-food {
+    top: 10%;
+    left: 5%;
+    width: 20%;
+    align-items: center;
+}
+
+.zone-pet {
+    top: 10%;
+    right: 5%;
+    width: 20%;
+    align-items: center;
+}
+
+.zone-text {
+    top: 45%;
+    left: 2%;
+    width: 20%;
+    align-items: center;
+}
+
+.zone-show {
+    top: 45%;
+    right: 2%;
+    width: 20%;
+    align-items: center;
+}
+
+.zone-hangout {
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+}
+
+/* Zone Labels */
+.zone-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.label-text {
+    background: transparent;
+    color: white;
+    padding: 5px 10px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 0 #000;
+    transform: rotate(-2deg);
+    z-index: 2;
+    pointer-events: auto;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.dashed-line {
+    display: none;
+}
+
+/* Remove dashed lines for cleaner look */
+
+/* Elements Cluster */
+.elements-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+/* Sticker Style Elements - Consistent Sizing */
+.element-card {
+    width: 70px;
+    height: 70px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* Clip content */
+}
+
+.element-card:hover {
+    transform: scale(1.15) rotate(var(--rot));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.element-card:active {
+    animation: clickBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Sticker Content Styling */
+.element-card img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.element-card i {
+    font-size: 2rem;
+    color: var(--bg-gradient-start);
+    /* Use theme color for icons inside white circle */
+    text-shadow: none;
+}
+
+/* Text Stickers */
+.element-card .preview-text {
+    font-size: 0.7rem !important;
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    color: #333;
+    background: #fff;
+    box-shadow: none;
+    transform: none;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Placed Elements */
+.placed-element {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+    /* Initial size set by JS, but max constraints here */
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.placed-element img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.placed-element.selected {
+    border: 2px dashed rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Element Controls (Delete/Rotate) */
+.element-controls {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    display: none;
+    /* Show only when selected */
+    gap: 5px;
+}
+
+.placed-element.selected .element-controls {
+    display: flex;
+}
+
+.control-btn {
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn {
+    color: #ff4757;
+}
+
+.rotate-btn {
+    color: #2e86de;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .tshirt-center-stage {
+        width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fun-title {
+        font-size: 1.5rem;
+        top: 10px;
+    }
+
+    .main-area {
+        flex-direction: column;
+        padding-top: 60px;
+        overflow-y: auto;
+    }
+
+    .tshirt-center-stage {
+        width: 300px;
+        height: 400px;
+        margin-bottom: 20px;
+    }
+
+    .scatter-zone {
+        position: relative;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .zone-label {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Animations */
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.placed-element.pop-in {
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Hide old stuff */
+.sidebar,
+.top-toolbar {
+    display: none !important;
+}
+
+/* Draggable Elements on Shirt */
+.design-element {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.1s;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.design-element:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+}
+
+.design-element img {
+    width: 100px;
+    /* Default size */
+    height: auto;
+    pointer-events: none;
+}
+
+.design-element .element-content {
+    font-size: 1.5rem;
+    /* Scale up for shirt */
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Responsive */
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .tshirt-wrapper {
+        width: 500px;
+    }
+
+    .element-card {
+        padding: 5px;
+    }
+
+    .element-card i {
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .main-area {
+        order: 1;
+        flex: 1;
+        min-height: 60vh;
+    }
+
+    .sidebar {
+        order: 2;
+        width: 100%;
+        height: auto;
+        max-height: 35vh;
+        flex-direction: row;
+        border-right: none;
+        border-top: 1px solid #333;
+        padding: 10px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        background: #fff;
+    }
+
+    .sidebar-header {
+        display: none;
+    }
+
+    .categories-container {
+        flex-direction: row;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .category-section {
+        min-width: 140px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .category-header {
+        padding: 10px;
+        white-space: nowrap;
+    }
+
+    .category-section.active {
+        min-width: 300px;
+        /* Expand width when active */
+    }
+
+    .category-section.active .category-content {
+        max-height: 200px;
+        /* Limit height */
+        overflow-y: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* More columns on mobile horizontal */
+        padding: 10px;
+    }
+
+    .tshirt-wrapper {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .controls {
+        bottom: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .control-btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Touch Targets */
+@media (hover: none) and (pointer: coarse) {
+    .resize-handle {
+        width: 24px;
+        height: 24px;
+        top: -12px;
+        left: -12px;
+    }
+
+    .handle-tr {
+        top: -12px;
+        right: -12px;
+        left: auto;
+    }
+
+    .handle-bl {
+        bottom: -12px;
+        left: -12px;
+        top: auto;
+    }
+
+    .handle-br {
+        bottom: -12px;
+        right: -12px;
+        left: auto;
+        top: auto;
+    }
+
+    .delete-btn {
+        width: 32px;
+        height: 32px;
+        top: -20px;
+        right: -20px;
+        font-size: 16px;
+    }
+
+    .control-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Animations & Interactive Feedback */
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8) rotate(var(--rotation));
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.05) rotate(var(--rotation));
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(var(--rotation));
+    }
+}
+
+@keyframes clickPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.element-card.clicked {
+    animation: clickPulse 0.2s ease-out;
+}
+
+.element-card::after {
+    content: '\f067';
+    /* FontAwesome Plus */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--accent);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+}
+
+.element-card:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.design-element {
+    /* Override previous transform to use variable for rotation */
+    transform: translate(-50%, -50%) rotate(var(--rotation));
+    transform-origin: center center;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    box-shadow: 0 0 0 0 rgba(108, 92, 231, 0);
+    transition: box-shadow 0.3s;
+    /* Removed transform transition for smoother drag/resize */
+    border: 2px solid transparent;
+    /* Reserve space for border */
+}
+
+.design-element.placing {
+    box-shadow: 0 0 15px rgba(108, 92, 231, 0.6);
+}
+
+.design-element.selected {
+    border: 2px solid var(--accent);
+    z-index: 1000 !important;
+    /* Always on top when selected */
+    cursor: move;
+}
+
+.design-element.dragging {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0.9;
+}
+
+/* Resize Handles */
+.resize-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    display: none;
+    /* Hidden by default */
+    z-index: 1001;
+}
+
+.design-element.selected .resize-handle {
+    display: block;
+}
+
+.handle-tl {
+    top: -6px;
+    left: -6px;
+    cursor: nwse-resize;
+}
+
+.handle-tr {
+    top: -6px;
+    right: -6px;
+    cursor: nesw-resize;
+}
+
+.handle-bl {
+    bottom: -6px;
+    left: -6px;
+    cursor: nesw-resize;
+}
+
+.handle-br {
+    bottom: -6px;
+    right: -6px;
+    cursor: nwse-resize;
+}
+
+/* Delete Button */
+.delete-btn {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 24px;
+    height: 24px;
+    background: #ff4757;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1002;
+}
+
+.design-element.selected .delete-btn {
+    display: flex;
+}
+
+.delete-btn:hover {
+    transform: scale(1.1);
+    background: #ff6b81;
+}
+
+/* --- Quirky Doodle Labels --- */
+.doodle-label {
+    position: absolute;
+    padding: 10px 20px;
+    border: 3px solid white;
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    /* Organic shape */
+    cursor: default;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+    animation: labelFloat 6s ease-in-out infinite;
+}
+
+.doodle-label i {
+    font-size: 1.1em;
+    color: var(--accent);
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+.doodle-label:hover {
+    transform: scale(1.1) rotate(2deg) !important;
+    /* Override float rotation */
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+    animation: none;
+    /* Pause float on hover */
+}
+
+/* Positioning */
+.pos-tl {
+    top: 15%;
+    left: 10%;
+    transform: rotate(-3deg);
+    animation-delay: 0s;
+}
+
+.pos-tr {
+    top: 15%;
+    right: 10%;
+    transform: rotate(2deg);
+    animation-delay: 1s;
+}
+
+.pos-ml {
+    top: 45%;
+    left: 5%;
+    transform: rotate(4deg);
+    animation-delay: 2s;
+}
+
+.pos-mr {
+    top: 45%;
+    right: 5%;
+    transform: rotate(-2deg);
+    animation-delay: 3s;
+}
+
+.pos-bl {
+    bottom: 25%;
+    left: 15%;
+    transform: rotate(-4deg);
+    animation-delay: 0.5s;
+}
+
+.pos-br {
+    bottom: 25%;
+    right: 15%;
+    transform: rotate(3deg);
+    animation-delay: 1.5s;
+}
+
+/* Decorative Doodles */
+.doodle-deco {
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Permanent Marker', cursive;
+    color: var(--accent);
+}
+
+.star-1 {
+    top: -15px;
+    left: -10px;
+    font-size: 1.5rem;
+    transform: rotate(-15deg);
+}
+
+.star-2 {
+    bottom: -15px;
+    right: -10px;
+    font-size: 1.2rem;
+    transform: rotate(15deg);
+}
+
+.dot-1 {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    top: -5px;
+    right: 50%;
+    box-shadow: 15px -5px 0 white;
+}
+
+.line-1 {
+    width: 30px;
+    height: 3px;
+    background: white;
+    bottom: -5px;
+    left: 10px;
+    transform: rotate(5deg);
+    border-radius: 2px;
+}
+
+.line-2 {
+    width: 20px;
+    height: 3px;
+    background: white;
+    top: -5px;
+    right: 10px;
+    transform: rotate(-5deg);
+    border-radius: 2px;
+}
+
+.arrow-1 {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid white;
+    top: -12px;
+    left: 50%;
+    transform: rotate(15deg);
+}
+
+/* Animations */
+@keyframes labelFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(var(--r, 0deg));
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 2deg));
+    }
+}
+
+/* Set rotation variables for animation consistency */
+.pos-tl {
+    --r: -3deg;
+}
+
+.pos-tr {
+    --r: 2deg;
+}
+
+.pos-ml {
+    --r: 4deg;
+}
+
+.pos-mr {
+    --r: -2deg;
+}
+
+.pos-bl {
+    --r: -4deg;
+}
+
+.pos-br {
+    --r: 3deg;
+}
+
+/* Responsive Hide */
+@media (max-width: 1024px) {
+    .doodle-label {
+        transform: scale(0.8);
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+
+    .pos-ml,
+    .pos-mr {
+        display: none;
+    }
+
+    /* Hide middle ones on tablet to save space */
+}
+
+@media (max-width: 768px) {
+    .doodle-label {
+        display: none;
+    }
+
+    /* Hide all on mobile to avoid clutter */
+}
+
+/* --- New Animations & Micro-interactions --- */
+
+/* 1. Entrance Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInCenter {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.category-section {
+    opacity: 0;
+    /* Hidden initially */
+    animation: slideInUp 0.5s ease forwards;
+}
+
+/* Stagger delays for sidebar categories */
+.category-section:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.category-section:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.category-section:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.category-section:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.category-section:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.tshirt-wrapper {
+    opacity: 0;
+    animation: slideInCenter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+}
+
+/* 2. Interaction Animations */
+
+/* Hover States - 150ms duration */
+.element-card {
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* Element Placement Pop */
+@keyframes popBounce {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.design-element.pop-in {
+    animation: popBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Selection Pulse */
+@keyframes borderPulse {
+    0% {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4);
+    }
+
+    70% {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 6px rgba(108, 92, 231, 0);
+    }
+
+    100% {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 0 rgba(108, 92, 231, 0);
+    }
+}
+
+.design-element.selected {
+    animation: borderPulse 2s infinite;
+    /* Ensure border is visible */
+    border: 2px solid var(--accent);
+}
+
+/* Haptic Feedback Simulation */
+.haptic-active {
+    transform: scale(0.95) !important;
+    transition: transform 0.05s ease !important;
+}
+
+/* 3. Loading State (Skeleton) */
+.skeleton {
+    background: linear-gradient(90deg, #252525 25%, #2a2a2a 50%, #252525 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.image-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.image-loading img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-loaded img {
+    opacity: 1;
+}
+
+.image-loaded .skeleton {
+    display: none;
+}
+
+/* 4. Responsive Touches */
+/* Disable text selection on drag areas */
+.design-area,
+.sidebar {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Cursor improvements */
+.control-btn,
+.category-header,
+.element-card {
+    cursor: pointer;
+}

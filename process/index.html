@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Shirt Design Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Permanent+Marker&family=Fredoka+One&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Background Particles -->
+    <div class="bg-particle" style="width: 20px; height: 20px; left: 10%; animation-duration: 15s;"></div>
+    <div class="bg-particle"
+        style="width: 50px; height: 50px; left: 20%; animation-duration: 25s; animation-delay: 2s;"></div>
+    <div class="bg-particle"
+        style="width: 10px; height: 10px; left: 50%; animation-duration: 10s; animation-delay: 5s;"></div>
+    <div class="bg-particle"
+        style="width: 30px; height: 30px; left: 80%; animation-duration: 20s; animation-delay: 1s;"></div>
+    <div class="bg-particle"
+        style="width: 15px; height: 15px; left: 90%; animation-duration: 12s; animation-delay: 3s;"></div>
+
+    <div class="app-container">
+        <!-- Main Canvas (Center Stage) -->
+        <main class="main-area">
+            <h1 class="fun-title">Build Your Vibe ✨</h1>
+            <!-- Instruction text hidden via CSS -->
+            <p class="instruction-text">click stuff to add it on the tee 👇</p>
+
+            <!-- Central T-Shirt -->
+            <div class="tshirt-center-stage">
+                <div class="tshirt-wrapper">
+                    <div class="image-loading">
+                        <div class="skeleton"></div>
+                        <img src="assets/tshirt.png" alt="T-Shirt Mockup" class="tshirt-bg"
+                            onload="this.parentElement.classList.add('image-loaded')">
+                    </div>
+                    <div class="design-area" id="designArea">
+                        <!-- Dropped elements will go here -->
+                        <div class="placeholder-hint">Drag stuff here! 👇</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCATTER ZONES -->
+
+            <!-- Top Left: Food -->
+            <div class="scatter-zone zone-food">
+                <div class="zone-label">
+                    <span class="label-text">what u munch on <i class="fas fa-utensils"></i></span>
+                    <svg class="dashed-line" viewBox="0 0 100 50">
+                        <path d="M0,0 Q50,50 100,20" />
+                    </svg>
+                </div>
+                <div class="elements-cluster">
+                    <div class="element-card float-1" data-type="image" data-src="assets/cup_noodles.png">
+                        <img src="assets/cup_noodles.png" alt="Noodles">
+                    </div>
+                    <div class="element-card float-2" data-type="text" data-content="KITKAT">
+                        <div class="preview-text kitkat-style">KitKat</div>
+                    </div>
+                    <div class="element-card float-3" data-type="icon" data-content="fa-pizza-slice">
+                        <i class="fas fa-pizza-slice" style="color: #ff9f43;"></i>
+                    </div>
+                    <div class="element-card float-1" data-type="icon" data-content="fa-ice-cream">
+                        <i class="fas fa-ice-cream" style="color: #ff9ff3;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Right: Pet -->
+            <div class="scatter-zone zone-pet">
+                <div class="zone-label">
+                    <span class="label-text">ur companion <i class="fas fa-dog"></i></span>
+                    <svg class="dashed-line" viewBox="0 0 100 50">
+                        <path d="M100,0 Q50,50 0,20" />
+                    </svg>
+                </div>
+                <div class="elements-cluster">
+                    <div class="element-card float-2" data-type="image" data-src="assets/dog_heart.png">
+                        <img src="assets/dog_heart.png" alt="Dog">
+                    </div>
+                    <div class="element-card float-3" data-type="icon" data-content="fa-cat">
+                        <i class="fas fa-cat" style="color: #54a0ff;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Left: Key Phrases -->
+            <div class="scatter-zone zone-text">
+                <div class="zone-label">
+                    <span class="label-text">catchphrases <i class="fas fa-quote-left"></i></span>
+                    <svg class="dashed-line" viewBox="0 0 100 20">
+                        <path d="M0,10 L100,10" />
+                    </svg>
+                </div>
+                <div class="elements-cluster">
+                    <div class="element-card float-1" data-type="text" data-content="1 SEC HA'AN">
+                        <div class="preview-text tiktok-style"><i class="fab fa-tiktok"></i> 1 SEC</div>
+                    </div>
+                    <div class="element-card float-2" data-type="text" data-content="Elma's">
+                        <div class="preview-text cheese-style">Elma's</div>
+                    </div>
+                    <div class="element-card float-3" data-type="text" data-content="kk">
+                        <div class="preview-text bubble-style">kk</div>
+                    </div>
+                    <div class="element-card float-1" data-type="text" data-content="NYPD">
+                        <div class="preview-text badge-style"><i class="fas fa-shield-alt"></i> NYPD</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Fav Show -->
+            <div class="scatter-zone zone-show">
+                <div class="zone-label">
+                    <span class="label-text">binge watch <i class="fas fa-film"></i></span>
+                    <svg class="dashed-line" viewBox="0 0 100 20">
+                        <path d="M100,10 L0,10" />
+                    </svg>
+                </div>
+                <div class="elements-cluster">
+                    <div class="element-card float-2" data-type="icon" data-content="fa-film">
+                        <i class="fas fa-film" style="color: #2e86de;"></i>
+                    </div>
+                    <div class="element-card float-3" data-type="icon" data-content="fa-gamepad">
+                        <i class="fas fa-gamepad" style="color: #5f27cd;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom: Hangout Spot -->
+            <div class="scatter-zone zone-hangout">
+                <div class="zone-label">
+                    <span class="label-text">where u chill <i class="fas fa-chair"></i></span>
+                    <svg class="dashed-line" viewBox="0 0 50 50">
+                        <path d="M25,50 L25,0" />
+                    </svg>
+                </div>
+                <div class="elements-cluster">
+                    <div class="element-card float-1" data-type="icon" data-content="fa-coffee">
+                        <i class="fas fa-coffee" style="color: #6F4E37;"></i>
+                    </div>
+                    <div class="element-card float-2" data-type="icon" data-content="fa-tree">
+                        <i class="fas fa-tree" style="color: #10ac84;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Removed -->
+        </main>
+    </div>
+
+    <div id="toast" class="toast hidden">Design Saved!</div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
