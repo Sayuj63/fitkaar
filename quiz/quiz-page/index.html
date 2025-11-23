@@ -42,30 +42,25 @@
 
         <!-- Question Section -->
         <section id="question-container" class="quiz-section">
-            <!-- Floating Orb Progress Indicator -->
-            <div class="progress-orbs">
-                <!-- Orbs will be generated dynamically by JS -->
-            </div>
+            <!-- Simple Progress Counter -->
+            <div class="progress-counter" id="progress-counter">Question 1 of 7</div>
             <div class="question-content">
                 <h2 id="question-text">Question goes here...</h2>
                 <div id="options-container" class="options-grid">
-                    <!-- Options injected via JS -->
+                    <!-- Answer cards will be injected here by JS (class="option-card") -->
                 </div>
             </div>
         </section>
 
-
         <!-- Result Section -->
         <section id="result" class="quiz-section">
             <div class="confetti-container"></div>
-
             <div class="result-container">
                 <div class="result-header">
                     <h2 class="result-title">🎉 Your Vibe Is... 🎉</h2>
                     <h1 id="result-name" class="vibe-name">The Creative Soul 🎨</h1>
                     <p id="result-subtitle" class="result-subtitle">You see art everywhere!</p>
                 </div>
-
                 <div class="result-card">
                     <div class="result-body">
                         <div class="design-preview">
@@ -73,16 +68,13 @@
                                 <div class="preview-icon" id="result-icon">🎨</div>
                             </div>
                         </div>
-
                         <div id="result-description" class="result-description">
                             <p>Your design should be unique, artistic, and expressive.</p>
                         </div>
-
                         <div id="result-recommendations" class="recommendations">
                             <!-- Recommendations will be injected by JS -->
                         </div>
                     </div>
-
                     <div class="result-actions">
                         <a href="../process/index.html" class="btn-primary btn-create">Create My Design ✨</a>
                         <button id="restart-btn" class="btn-secondary">Retake Quiz 🔄</button>
