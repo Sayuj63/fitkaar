@@ -172,6 +172,8 @@ function startQuiz() {
 // Initialize progress orbs
 function initializeProgressOrbs() {
     const progressContainer = document.querySelector('.progress-orbs');
+    if (!progressContainer) return;
+
     progressContainer.innerHTML = '';
     
     quizData.questions.forEach((_, index) => {
@@ -207,6 +209,12 @@ function displayQuestion() {
     
     // Update question text
     document.getElementById('question-text').textContent = question.question;
+
+    // Update progress counter text
+    const progressCounter = document.getElementById('progress-counter');
+    if (progressCounter) {
+        progressCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
+    }
     
     // Update progress orbs
     updateProgressOrbs();
