@@ -1,405 +1,216 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const designArea = document.getElementById('designArea');
-    const placeholderHint = document.querySelector('.placeholder-hint');
-    const toast = document.getElementById('toast');
+    const models = ['male_model.png', 'female_model.png'];
+    let currentModelIndex = 0;
     
-    let zIndexCounter = 10;
-    let placedElements = []; // Track elements
+    // Store placed stickers for each model. 
+    const placedStickers = {
+        'male_model.png': new Set(),
+        'female_model.png': new Set()
+    };
 
-    // Selection Logic
-    let selectedElement = null;
+    // Fixed positions for each sticker (Top/Left percentages)
+    // Matched to reference image layout
+    const stickerConfig = {
+        'camera_sticker.png': { top: '42%', left: '50%', width: '25%' }, // Top Center (Neck)
+        'chai_sticker.png': { top: '48%', left: '58%', width: '15%' }, // Right side
+        'football_sticker.png': { top: '48%', left: '42%', width: '25%' }, // Left side
+        'guitar_sticker.png': { top: '55%', left: '62%', width: '15%' }, // Right side vertical
+        'mountain_sticker.png': { top: '35%', left: '50%', width: '30%' }, // Top Center (Shoulders)
+        'pasta_sticker.png': { top: '55%', left: '50%', width: '20%' }, // Center
+        'quote_sticker.png': { top: '48%', left: '50%', width: '35%' }, // Center Text
+        'ticket_sticker.png': { top: '60%', left: '45%', width: '22%' } // Bottom Left
+    };
 
-    designArea.addEventListener('click', (e) => {
-        if (e.target === designArea) {
-            deselectAll();
-        }
-    });
+    const modelImage = document.getElementById('modelImage');
+    const designArea = document.getElementById('designArea');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    // Select all element cards from scatter zones
+    const stickerItems = document.querySelectorAll('.element-card');
 
-    function selectElement(el) {
-        deselectAll();
-        selectedElement = el;
-        el.classList.add('selected');
-    }
+    // Initialize
+    updateModel();
 
-    function deselectAll() {
-        if (selectedElement) {
-            selectedElement.classList.remove('selected');
-            selectedElement = null;
-        }
-    }
-
-    // Dragging Logic
-    function makeDraggable(el) {
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-
-        function onDragStart(e) {
-            if (e.target.classList.contains('resize-handle') || e.target.closest('.delete-btn')) return;
-            
-            isDragging = true;
-            selectElement(el);
-            
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            
-            startX = clientX;
-            startY = clientY;
-            initialLeft = el.offsetLeft;
-            initialTop = el.offsetTop;
-            
-            el.style.cursor = 'grabbing';
-            if (e.type.includes('touch')) {
-                // e.preventDefault(); // Prevent scrolling while dragging
-            }
-        }
-
-        function onDragMove(e) {
-            if (!isDragging) return;
-
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
-            const dx = clientX - startX;
-            const dy = clientY - startY;
-
-            el.style.left = `${initialLeft + dx}px`;
-            el.style.top = `${initialTop + dy}px`;
-            
-            if (e.type.includes('touch')) e.preventDefault(); // Prevent scroll only when dragging
-        }
-
-        function onDragEnd() {
-            if (isDragging) {
-                isDragging = false;
-                el.style.cursor = 'grab';
-            }
-        }
-
-        el.addEventListener('mousedown', onDragStart);
-        el.addEventListener('touchstart', onDragStart, { passive: false });
-
-        document.addEventListener('mousemove', onDragMove);
-        document.addEventListener('touchmove', onDragMove, { passive: false });
-
-        document.addEventListener('mouseup', onDragEnd);
-        document.addEventListener('touchend', onDragEnd);
-    }
-
-    // Resizing Logic
-    function makeResizable(el) {
-        const handles = el.querySelectorAll('.resize-handle');
-        const content = el.querySelector('img, .preview-text, i');
-        
-        handles.forEach(handle => {
-            function onResizeStart(e) {
-                e.stopPropagation();
-                if (e.type.includes('touch')) e.preventDefault();
-
-                const isNW = handle.classList.contains('nw');
-                const isNE = handle.classList.contains('ne');
-                const isSW = handle.classList.contains('sw');
-                const isSE = handle.classList.contains('se');
-                
-                const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-                const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
-                const startX = clientX;
-                const startY = clientY;
-                const startWidth = el.offsetWidth;
-                const startHeight = el.offsetHeight;
-                const startLeft = el.offsetLeft;
-                const startTop = el.offsetTop;
-                
-                // Get current scale/font-size
-                let startFontSize = 16;
-                if (!el.querySelector('img')) {
-                    startFontSize = parseFloat(window.getComputedStyle(content).fontSize);
-                }
-
-                function onResizeMove(e) {
-                    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-
-                    const dx = clientX - startX;
-                    const dy = clientY - startY;
-                    
-                    let newWidth = startWidth;
-                    let newHeight = startHeight;
-                    
-                    // Calculate new dimensions based on handle
-                    if (isSE) {
-                        newWidth = startWidth + dx;
-                        newHeight = startHeight + dy; 
-                    } else if (isSW) {
-                        newWidth = startWidth - dx;
-                        newHeight = startHeight + dy;
-                        el.style.left = `${startLeft + dx}px`;
-                    } else if (isNE) {
-                        newWidth = startWidth + dx;
-                        newHeight = startHeight - dy;
-                        el.style.top = `${startTop + dy}px`;
-                    } else if (isNW) {
-                        newWidth = startWidth - dx;
-                        newHeight = startHeight - dy;
-                        el.style.left = `${startLeft + dx}px`;
-                        el.style.top = `${startTop + dy}px`;
-                    }
-
-                    // Min/Max size check
-                    if (newWidth > 30 && newHeight > 30 && newWidth < 80 && newHeight < 80) {
-                        el.style.width = `${newWidth}px`;
-                        el.style.height = `${newHeight}px`;
-                        
-                        // Scale content
-                        if (el.querySelector('img')) {
-                            // Image scales automatically
-                        } else {
-                            // Scale text/icon
-                            const scaleFactor = newWidth / startWidth;
-                            content.style.fontSize = `${startFontSize * scaleFactor}px`;
-                        }
-                    }
-                    
-                    if (e.type.includes('touch')) e.preventDefault();
-                }
-
-                function onResizeEnd() {
-                    document.removeEventListener('mousemove', onResizeMove);
-                    document.removeEventListener('touchmove', onResizeMove);
-                    document.removeEventListener('mouseup', onResizeEnd);
-                    document.removeEventListener('touchend', onResizeEnd);
-                }
-
-                document.addEventListener('mousemove', onResizeMove);
-                document.addEventListener('touchmove', onResizeMove, { passive: false });
-                document.addEventListener('mouseup', onResizeEnd);
-                document.addEventListener('touchend', onResizeEnd);
-            }
-
-            handle.addEventListener('mousedown', onResizeStart);
-            handle.addEventListener('touchstart', onResizeStart, { passive: false });
-        });
-
-        // Delete Button
-        el.querySelector('.delete-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            deleteElement(el);
-        });
-    }
-
-    function deleteElement(el) {
-        el.classList.add('fading-out');
+    function updateModel() {
+        const modelFile = models[currentModelIndex];
+        // Fade out effect
+        modelImage.style.opacity = '0';
         setTimeout(() => {
-            el.remove();
-            placedElements = placedElements.filter(e => e !== el);
-            if (placedElements.length === 0) {
-                placeholderHint.style.display = 'block';
-            }
-        }, 300); // Match animation duration
+            modelImage.src = `assets/${modelFile}`;
+            modelImage.onload = () => {
+                modelImage.style.opacity = '1';
+            };
+            renderStickers();
+        }, 200);
     }
 
-    // --- Animations & Interactions ---
+    function renderStickers() {
+        designArea.innerHTML = '';
+        const modelFile = models[currentModelIndex];
+        const activeStickers = placedStickers[modelFile];
 
-    // Page Load Stagger
-    const cards = document.querySelectorAll('.element-card');
-    cards.forEach(card => {
-        // Random fly-in direction
-        const rx = (Math.random() - 0.5) * 100;
-        const ry = (Math.random() - 0.5) * 100;
-        card.style.setProperty('--fly-x', `${rx}px`);
-        card.style.setProperty('--fly-y', `${ry}px`);
-        
-        // Add flyIn animation class
-        card.style.animation = `flyIn 0.8s ease-out forwards ${card.style.animationDelay || '0s'}`;
+        activeStickers.forEach(filename => {
+            const config = stickerConfig[filename];
+            if (!config) return;
 
-        // Switch to float animation after load
-        card.addEventListener('animationend', (e) => {
-            if (e.animationName === 'flyIn') {
-                card.style.animation = ''; // Clear flyIn
-                card.classList.add('loaded'); // Triggers floatScatter in CSS
-            }
-        });
-    });
-
-    // Cursor Trail
-    let lastTrailTime = 0;
-    document.addEventListener('mousemove', (e) => {
-        const now = Date.now();
-        if (now - lastTrailTime > 50) { // Limit creation rate
-            createTrailDot(e.clientX, e.clientY);
-            lastTrailTime = now;
-        }
-    });
-
-    function createTrailDot(x, y) {
-        const dot = document.createElement('div');
-        dot.classList.add('cursor-trail');
-        dot.style.left = `${x}px`;
-        dot.style.top = `${y}px`;
-        document.body.appendChild(dot);
-        setTimeout(() => dot.remove(), 500);
-    }
-
-    // Click to Place (Flying Element)
-    cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.stopPropagation(); 
+            const el = document.createElement('div');
+            el.className = 'placed-element fixed-pos';
+            el.style.position = 'absolute';
+            el.style.top = config.top;
+            el.style.left = config.left;
+            el.style.width = config.width;
+            el.style.transform = 'translate(-50%, -50%)'; // Center on coordinate
+            el.style.zIndex = '10';
+            el.style.pointerEvents = 'none'; // Fixed position
             
-            // 1. Create flying clone
-            const rect = card.getBoundingClientRect();
-            const clone = card.cloneNode(true);
-            clone.classList.add('flying-element');
-            clone.style.left = `${rect.left}px`;
-            clone.style.top = `${rect.top}px`;
-            clone.style.width = `${rect.width}px`;
-            clone.style.height = `${rect.height}px`;
-            clone.style.margin = '0';
-            clone.style.transform = 'none'; // Reset rotations for flight
-            document.body.appendChild(clone);
+            const img = document.createElement('img');
+            img.src = `assets/${filename}`;
+            img.style.width = '100%';
+            img.style.height = 'auto';
+            img.style.filter = 'drop-shadow(0 5px 15px rgba(0,0,0,0.3))';
+            
+            el.appendChild(img);
+            
+            // Pop Animation
+            el.animate([
+                { transform: 'translate(-50%, -50%) scale(0)' },
+                { transform: 'translate(-50%, -50%) scale(1.2)' },
+                { transform: 'translate(-50%, -50%) scale(1)' }
+            ], { duration: 400, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
 
-            // 2. Calculate target position (random spot on t-shirt)
-            const designRect = designArea.getBoundingClientRect();
-            // Random position within 60% of design area center
-            const targetX = designRect.left + (designRect.width * 0.2) + Math.random() * (designRect.width * 0.6);
-            const targetY = designRect.top + (designRect.height * 0.2) + Math.random() * (designRect.height * 0.6);
+            designArea.appendChild(el);
+        });
+        
+        // Update active state in scatter zones
+        stickerItems.forEach(item => {
+            const src = item.dataset.src.split('/').pop();
+            if (activeStickers.has(src)) {
+                item.style.border = '3px solid #FFD700';
+                item.style.transform = 'scale(1.15) rotate(var(--rot, 0deg))';
+                item.classList.add('active-sticker');
+            } else {
+                item.style.border = 'none';
+                item.style.transform = '';
+                item.classList.remove('active-sticker');
+            }
+        });
+    }
 
-            // 3. Animate
-            requestAnimationFrame(() => {
-                clone.classList.add('moving');
-                clone.style.left = `${targetX - rect.width/2}px`;
-                clone.style.top = `${targetY - rect.height/2}px`;
-            });
+    // Event Listeners
+    prevBtn.addEventListener('click', () => {
+        currentModelIndex = (currentModelIndex - 1 + models.length) % models.length;
+        updateModel();
+    });
 
-            // 4. On Arrival
-            setTimeout(() => {
-                clone.remove();
-                addStickerToTshirt(card, targetX, targetY);
-                createConfetti(targetX, targetY);
-                placeholderHint.style.display = 'none';
-            }, 600); // Match transition duration
+    nextBtn.addEventListener('click', () => {
+        currentModelIndex = (currentModelIndex + 1) % models.length;
+        updateModel();
+    });
+
+    // Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    designArea.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+    
+    designArea.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+    
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            // Swipe Left -> Next
+            currentModelIndex = (currentModelIndex + 1) % models.length;
+            updateModel();
+        }
+        if (touchEndX > touchStartX + 50) {
+            // Swipe Right -> Prev
+            currentModelIndex = (currentModelIndex - 1 + models.length) % models.length;
+            updateModel();
+        }
+    }
+
+    stickerItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const src = item.dataset.src.split('/').pop(); // get filename
+            const modelFile = models[currentModelIndex];
+            
+            if (placedStickers[modelFile].has(src)) {
+                placedStickers[modelFile].delete(src); // Toggle off
+            } else {
+                placedStickers[modelFile].add(src); // Toggle on
+                createConfetti(); // Fun feedback
+                createSparkles(item.getBoundingClientRect().left + 30, item.getBoundingClientRect().top);
+            }
+            renderStickers();
         });
     });
 
-    function addStickerToTshirt(originalCard, pageX, pageY) {
-        const type = originalCard.dataset.type;
-        const content = originalCard.dataset.content;
-        const src = originalCard.dataset.src;
-        
-        // Create the actual element on the t-shirt
-        const newEl = document.createElement('div');
-        newEl.classList.add('placed-element'); // Use placed-element class
-        
-        // Calculate relative position inside designArea
-        const designRect = designArea.getBoundingClientRect();
-        const relX = pageX - designRect.left;
-        const relY = pageY - designRect.top;
-        
-        newEl.style.left = `${relX}px`;
-        newEl.style.top = `${relY}px`;
-        newEl.style.width = '60px'; // Initial size
-        newEl.style.height = '60px'; // Initial size
-        newEl.style.zIndex = zIndexCounter++;
-        
-        // Content Logic
-        if (type === 'image') {
-            const img = document.createElement('img');
-            img.src = src;
-            newEl.appendChild(img);
-        } else if (type === 'text') {
-            const textContent = originalCard.querySelector('.preview-text').cloneNode(true);
-            textContent.style.fontSize = '1rem'; // Reset font size
-            newEl.appendChild(textContent);
-        } else if (type === 'icon') {
-            const iconContent = originalCard.querySelector('i').cloneNode(true);
-            iconContent.style.fontSize = '2.5rem';
-            newEl.appendChild(iconContent);
-        }
+    // --- Effects ---
 
-        // Add controls
-        const controls = document.createElement('div');
-        controls.classList.add('element-controls');
-        controls.innerHTML = `
-            <div class="resize-handle nw"></div>
-            <div class="resize-handle ne"></div>
-            <div class="resize-handle sw"></div>
-            <div class="resize-handle se"></div>
-            <div class="control-btn delete-btn">×</div>
-            <div class="control-btn rotate-btn">↻</div>
-        `;
-        newEl.appendChild(controls);
-
-        // Make draggable/interactive
-        makeDraggable(newEl);
-        makeResizable(newEl);
-        
-        designArea.appendChild(newEl);
-        placedElements.push(newEl);
-        
-        // Bounce effect on landing
-        newEl.animate([
-            { transform: 'scale(0)' },
-            { transform: 'scale(1.2)' },
-            { transform: 'scale(1)' }
-        ], {
-            duration: 400,
-            easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-        });
-        
-        selectElement(newEl);
-    }
-
-    function createConfetti(x, y) {
+    function createConfetti() {
         const colors = ['#ff9f43', '#ff9ff3', '#54a0ff', '#5f27cd', '#10ac84'];
-        for (let i = 0; i < 12; i++) {
+        const rect = designArea.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 20; i++) {
             const confetti = document.createElement('div');
             confetti.classList.add('confetti-piece');
-            confetti.style.left = `${x}px`;
-            confetti.style.top = `${y}px`;
-            confetti.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+            confetti.style.position = 'fixed';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = `${centerX}px`;
+            confetti.style.top = `${centerY}px`;
+            confetti.style.zIndex = '9999';
             
             const angle = Math.random() * Math.PI * 2;
-            const velocity = 50 + Math.random() * 80;
+            const velocity = 100 + Math.random() * 100;
             const tx = Math.cos(angle) * velocity;
             const ty = Math.sin(angle) * velocity;
             
-            confetti.style.setProperty('--tx', `${tx}px`);
-            confetti.style.setProperty('--ty', `${ty}px`);
+            confetti.animate([
+                { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'ease-out'
+            }).onfinish = () => confetti.remove();
             
             document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 800);
         }
     }
-
-    // Haptic Feedback Simulation & Sparkles
-    document.addEventListener('click', (e) => {
-        const target = e.target.closest('button, .category-header, .control-btn');
-        if (target) {
-             createSparkles(e.clientX, e.clientY);
-             target.classList.add('haptic-active');
-             setTimeout(() => target.classList.remove('haptic-active'), 100);
-        }
-    });
 
     function createSparkles(x, y) {
         for (let i = 0; i < 5; i++) {
             const sparkle = document.createElement('div');
-            sparkle.classList.add('sparkle');
             sparkle.innerHTML = '✨';
+            sparkle.style.position = 'fixed';
             sparkle.style.left = `${x}px`;
             sparkle.style.top = `${y}px`;
+            sparkle.style.fontSize = '20px';
+            sparkle.style.zIndex = '9999';
+            sparkle.style.pointerEvents = 'none';
             
-            // Random direction
             const angle = Math.random() * Math.PI * 2;
-            const velocity = 30 + Math.random() * 50;
+            const velocity = 30 + Math.random() * 30;
             const tx = Math.cos(angle) * velocity;
             const ty = Math.sin(angle) * velocity;
             
-            sparkle.style.setProperty('--tx', `${tx}px`);
-            sparkle.style.setProperty('--ty', `${ty}px`);
+            sparkle.animate([
+                { transform: 'translate(0, 0) scale(0)', opacity: 1 },
+                { transform: `translate(${tx}px, ${ty}px) scale(1.5)`, opacity: 0 }
+            ], {
+                duration: 600,
+                easing: 'ease-out'
+            }).onfinish = () => sparkle.remove();
             
             document.body.appendChild(sparkle);
-            
-            setTimeout(() => sparkle.remove(), 800);
         }
     }
 });
