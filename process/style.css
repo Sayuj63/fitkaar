@@ -301,8 +301,8 @@ body {
     user-select: none;
     filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
     /* Initial size set by JS, but max constraints here */
-    max-width: 80px;
-    max-height: 80px;
+    /* max-width: 80px; REMOVED to allow JS sizing */
+    /* max-height: 80px; REMOVED to allow JS sizing */
 }
 
 .placed-element img {
